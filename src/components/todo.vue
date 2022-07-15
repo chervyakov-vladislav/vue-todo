@@ -1,7 +1,9 @@
 <template lang="pug">
 div.todo
   todo-input(
+    :todoList="todo"
     @addElem="addElem"
+    @checkAllItems = "checkAllItems"
   )
   todo-list(
     :todosList="filteredTodos"
@@ -44,7 +46,7 @@ export default {
   },
   methods: {
     addElem(todo) {
-      this.todo.push(todo)
+      this.todo.unshift(todo)
     },
     deleteElem(id){
       this.todo = this.todo.filter(item => {
@@ -58,6 +60,11 @@ export default {
     },
     filterTodos(filter) {
       this.filter = filter;
+    },
+    checkAllItems(checkValue) {
+      this.todo.forEach(item => {
+        return item.checked = checkValue;
+      })
     }
   }
 }
