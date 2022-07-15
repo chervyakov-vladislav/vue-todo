@@ -11,6 +11,7 @@ div.todo
     @deleteElem = "deleteElem"
     @checkTodo = "checkTodo"
     @filterTodos = "filterTodos"
+    @deleteCompletedTodo = "deleteElem"
   )
 </template>
 

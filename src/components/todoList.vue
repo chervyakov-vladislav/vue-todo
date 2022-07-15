@@ -16,12 +16,18 @@
         todoListFilter(
           @filterTodos="filterTodos"
         )
+      .clear
+        todoListClear(
+          :todosList="todosList"
+          @deleteCompletedTodo="deleteCompletedTodo"
+        )
 </template>
 
 <script>
 
 import todoListFilter from "./todoListFilter";
 import todoListItem from "./todoListItem";
+import todoListClear from "./todoListClear";
 
 export default {
   props: {
@@ -29,7 +35,8 @@ export default {
   },
   components: {
     todoListFilter,
-    todoListItem
+    todoListItem,
+    todoListClear
   },
   methods: {
     deleteElem(todoId) {
@@ -40,6 +47,9 @@ export default {
     },
     filterTodos(filter) {
       this.$emit('filterTodos', filter);
+    },
+    deleteCompletedTodo(completedTodo){
+      this.$emit('deleteCompletedTodo', completedTodo);
     }
   }
 }
