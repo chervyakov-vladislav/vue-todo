@@ -2,17 +2,11 @@
 div.todo
   todo-input(
     :todoList="todo"
-    @addElem="addElem"
-    @checkAllItems = "checkAllItems"
   )
   todo-list(
     :todosList="filteredTodos"
     :itemsLeft="todo.length"
-    v-if="todo.length > 0"
-    @deleteElem = "deleteElem"
-    @checkTodo = "checkTodo"
-    @filterTodos = "filterTodos"
-    @deleteCompletedTodo = "deleteElem"
+    v-if="todo.length > 0"    
   )
 </template>
 
@@ -22,12 +16,11 @@ div.todo
 
 import todoInput from "./todoInput";
 import todoList from "./todoList";
+import {mapState} from 'vuex';
 
 export default {
   data() {
     return {
-      todo: [],
-      filter: 'all'
     }
   },
   components: {
@@ -35,6 +28,10 @@ export default {
     todoList
   },
   computed: {
+    ...mapState({
+      todo: state => state.todos.todos,
+      filter: state => state.todos.filter
+    }),
     filteredTodos() {
       switch(this.filter){
         case 'all': 
@@ -44,29 +41,6 @@ export default {
         case 'completed':
           return this.todo.filter(item => item.checked == true)
         }
-    }
-  },
-  methods: {
-    addElem(todo) {
-      this.todo.unshift(todo)
-    },
-    deleteElem(id){
-      this.todo = this.todo.filter(item => {
-        return item.id != id
-      })
-    },
-    checkTodo(elem) {
-      this.todo = this.todo.map(item => {
-        return item.id == elem.id? elem : item
-      })
-    },
-    filterTodos(filter) {
-      this.filter = filter;
-    },
-    checkAllItems(checkValue) {
-      this.todo.forEach(item => {
-        return item.checked = checkValue;
-      })
     }
   }
 }

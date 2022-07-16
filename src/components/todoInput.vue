@@ -6,7 +6,7 @@
     placeholder="Todo Name"
     autofocus
     v-model="todo.name"
-    @keydown.enter="addElem"
+    @keydown.enter="addNewElem"
     :class="{'border-error' : validation.hasError('todo.name')}"
   ).input
   .complete-all(:class="{show: todoList.length > 0}")
@@ -19,7 +19,7 @@
 
 <script>
 import {Validator} from 'simple-vue-validator';
-
+import {mapMutations} from 'vuex';
 let uniqId = 0;
   export default {
     mixins: [require('simple-vue-validator').mixin],
@@ -42,13 +42,15 @@ let uniqId = 0;
       }
     },
     methods: {
-      addElem() {
+      ...mapMutations(['addElem', 'checkAllItems']),
+      addNewElem() {
         this.$validate().then(success => {
           if (!success) return;
 
           uniqId++;
           this.todo.id = uniqId;
-          this.$emit('addElem', {...this.todo});
+
+          this.addElem({...this.todo});
           this.todo.name = "";
           this.status = false;
 
@@ -56,7 +58,7 @@ let uniqId = 0;
         });
       },
       checkAllTodo(e) {
-        this.$emit('checkAllItems', e.target.checked);
+        this.checkAllItems(e.target.checked);
         this.status = true;
       }
     },

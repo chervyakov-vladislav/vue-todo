@@ -8,6 +8,8 @@ button(
 
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   props: {
     todosList: []
@@ -18,8 +20,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['deleteElem']),
     removeCompleted() {
-      this.completedTodos.forEach(todo => this.$emit('deleteCompletedTodo', todo))
+      this.completedTodos.forEach(todo => this.deleteElem(todo))
     }
   },
   watch: {
