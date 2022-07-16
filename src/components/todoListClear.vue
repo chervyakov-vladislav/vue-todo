@@ -39,7 +39,7 @@ export default {
   background: transparent;
   font-weight: 300;
   color: inherit;
-  cursor: pointer;
+  
   border: none;
   border-bottom: 1px solid transparent;
   outline: none;
@@ -48,6 +48,7 @@ export default {
 
 .active {
   opacity: 1;
+  cursor: pointer;
 }
 
 .clear-btn:hover {

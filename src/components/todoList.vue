@@ -11,7 +11,7 @@
 
   .footer
     .footer-content
-      .counter {{todosList.length}} items left
+      .counter {{itemsLeft}} items left
       .filter
         todoListFilter(
           @filterTodos="filterTodos"
@@ -31,7 +31,8 @@ import todoListClear from "./todoListClear";
 
 export default {
   props: {
-    todosList: []
+    todosList: [],
+    itemsLeft: 0
   },
   components: {
     todoListFilter,

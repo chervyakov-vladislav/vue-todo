@@ -1,12 +1,13 @@
 <template lang="pug">
 .todo-input
+  div.error {{validation.firstError('todo.name')}}
   input(
     type="text"
     placeholder="Todo Name"
     autofocus
     v-model="todo.name"
     @keydown.enter="addElem"
-    
+    :class="{'border-error' : validation.hasError('todo.name')}"
   ).input
   .complete-all(:class="{show: todoList.length > 0}")
     input(
@@ -17,8 +18,16 @@
 </template>
 
 <script>
+import {Validator} from 'simple-vue-validator';
+
 let uniqId = 0;
   export default {
+    mixins: [require('simple-vue-validator').mixin],
+    validators: {
+      'todo.name'(value) {
+        return Validator.value(value).required("Поле не может быть пустым");
+      }
+    },
     props: {
       todoList: []
     },
@@ -34,13 +43,21 @@ let uniqId = 0;
     },
     methods: {
       addElem() {
-        uniqId++;
-        this.todo.id = uniqId;
-        this.$emit('addElem', {...this.todo});
-        this.todo.name = "";
+        this.$validate().then(success => {
+          if (!success) return;
+
+          uniqId++;
+          this.todo.id = uniqId;
+          this.$emit('addElem', {...this.todo});
+          this.todo.name = "";
+          this.status = false;
+
+          this.validation.reset();
+        });
       },
       checkAllTodo(e) {
         this.$emit('checkAllItems', e.target.checked);
+        this.status = true;
       }
     },
     watch: {
@@ -70,6 +87,10 @@ let uniqId = 0;
   width: 100%;
 }
 
+.border-error {
+  border-color: firebrick;
+}
+
 .complete-all {
   position: absolute;
   left: 20px;
@@ -79,5 +100,13 @@ let uniqId = 0;
 
 .show {
   display: block;
+}
+
+.error {
+  position: absolute;
+  font-size: 20px;
+  color: firebrick;
+  top: -30px;
+  left: 0;
 }
 </style>

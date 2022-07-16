@@ -7,6 +7,7 @@ div.todo
   )
   todo-list(
     :todosList="filteredTodos"
+    :itemsLeft="todo.length"
     v-if="todo.length > 0"
     @deleteElem = "deleteElem"
     @checkTodo = "checkTodo"
