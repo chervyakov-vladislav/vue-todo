@@ -8,6 +8,10 @@
         :checked="todo.checked"
       ).input
     .title {{todo.name}}
+  router-link(
+    tag="button"
+    :to="`/view/${todo.name}`"
+  ).view-btn &rarr;
   button(
     type="button"
     @click="deleteElem"
@@ -77,5 +81,21 @@
 
   .todo-item:hover .remove-btn {
     visibility: visible;
+  }
+
+  .view-btn {
+    opacity: 0;
+    margin-right: 20px;
+    padding: 0px 10px 3px;
+    background: transparent;
+    border: 1px solid #777;
+    color: #777;
+    border-radius: 3px;
+    font-size: 25px;
+    cursor: pointer;
+  }
+
+  .view-btn:hover {
+    opacity: 1;
   }
 </style>>
